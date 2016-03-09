@@ -1,4 +1,4 @@
-cpanel-deploy-new-relic-apps
+cpanel-deploy-new-relic-apps-fcgi
 ============================
 
 #Adding hook
@@ -7,7 +7,7 @@ To add the hook into cPanel, you should use the code below:
 
 ``` bash
 /usr/local/cpanel/bin/manage_hooks \
-add script /opt/makehtaccess/makehtaccess.py \
+add script /opt/newrelic/makeuserini.py \
 --stage post \
 --category Whostmgr \
 --event Accounts::Create \
@@ -30,15 +30,13 @@ hookdata = json.loads(rawData[0])
 data = hookdata['data']
 username = data['user']
 domain = data['domain']
-path = '/home/%s/.htaccess' % username
+path = '/home/%s/public_html/.user.ini' % username
 
 uid = pwd.getpwnam(username).pw_uid
 gid = grp.getgrnam(username).gr_gid
 
 file_content = """\
-<IfModule mod_php5.c>
-    php_value newrelic.appname "%s"
-</IfModule>
+newrelic.appname = "% domain"
 """ % domain
 
 with open(path, 'w') as f:
@@ -47,7 +45,7 @@ with open(path, 'w') as f:
 os.chown(path, uid, gid)
 ```
 	
-Above, you can see the code (located in makehtaccess folder).
+Above, you can see the code (located in newrelic folder).
 
 The cPanel hook system will return a json string that we can read from stdin, so we use simplejson (It's included in the repository) to do this. After this we parse the json data, and assign some variables.
 
@@ -55,5 +53,5 @@ We then get the uid and gid from the user, since we need to make sure the file w
 
 We then write the `file_content` to the file stored in `path` and chown the file to the correct user.
 
-###Are you running fcgi?
-If you're running fcgi, using the php_values is not supported. The way to fix this, is using [htscanner Enhanced](https://github.com/piannelli/htscanner-enhanced) made by [Paolo Iannelli](http://www.paoloiannelli.com/).
+### Project Sponsor
+This project is sponsored by Zenith Media Canada ( www.zenithmedia.ca )
