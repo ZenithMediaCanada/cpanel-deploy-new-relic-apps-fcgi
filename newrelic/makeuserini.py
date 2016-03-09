@@ -9,15 +9,13 @@ hookdata = json.loads(rawData[0])
 data = hookdata['data']
 username = data['user']
 domain = data['domain']
-path = '/home/%s/.htaccess' % username
+path = '/home/%s/public_html/.user.ini' % username
 
 uid = pwd.getpwnam(username).pw_uid
 gid = grp.getgrnam(username).gr_gid
 
 file_content = """\
-<IfModule mod_php5.c>
-    php_value newrelic.appname "%s"
-</IfModule>
+newrelic.appname = "% domain"
 """ % domain
 
 with open(path, 'w') as f:
