@@ -53,5 +53,7 @@ We then get the uid and gid from the user, since we need to make sure the file w
 
 We then write the `file_content` to the file stored in `path` and chown the file to the correct user.
 
+Based on Documentation from https://documentation.cpanel.net/display/SDK/WHM+API+1+Functions+-+createacct
+
 ### Project Sponsor
 This project is sponsored by Zenith Media Canada ( www.zenithmedia.ca )
