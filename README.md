@@ -36,7 +36,7 @@ uid = pwd.getpwnam(username).pw_uid
 gid = grp.getgrnam(username).gr_gid
 
 file_content = """\
-newrelic.appname = "% domain"
+newrelic.appname = "%s"
 """ % domain
 
 with open(path, 'w') as f:
